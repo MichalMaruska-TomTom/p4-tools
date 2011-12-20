@@ -1,0 +1,15 @@
+#! /bin/bash
+
+
+# list the pending (p4) changelists
+
+p4client=$(p4-client)
+p4 changes -s pending -u $P4USER -c $p4client  |\
+ sed -e "s/^Change //;s/ by $P4USER@$p4client//;s/ \*pending\*//"
+
+
+
+# how to cache?
+
+# number  description
+

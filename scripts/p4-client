@@ -1,0 +1,42 @@
+#! /bin/sh
+
+# Determine the current P4 client, without contacting the server
+# because that is slow. Try:
+# p4 client -o|- grep '^Client:'|sed -e 's/^Client: //'
+
+# This uses the .p4rc files.
+
+# note, that dir is only  (../)*
+function find_p4_conf() {
+    dir=$1
+    if [ -e $dir$P4CONFIG ];
+    then
+	source $dir$P4CONFIG
+	echo $P4CLIENT
+    else
+	# stop if at /
+	parent=$(readlink -f "$dir")
+	# echo $parent
+	if [ "x/" =  "x$parent"  ]
+	then
+	    exit -1;
+	fi
+
+	find_p4_conf "../$dir"
+    fi
+}
+
+# find out p4client
+
+if [ -z "$P4CLIENT" ]
+then
+    if [ -z "$P4CONFIG" ]
+    then
+	exit -1
+    else
+	find_p4_conf ""
+    fi
+else
+    echo $P4CLIENT
+fi
+

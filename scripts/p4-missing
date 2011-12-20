@@ -1,0 +1,11 @@
+#! /bin/bash -e
+
+
+(p4 cstat| grep -B 1 'need\|partial' |grep change|sed -e 's/^.*change //') |
+(
+while  read a;
+do
+    echo -n "$a "
+    p4-info $a
+done
+)

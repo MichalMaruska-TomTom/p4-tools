@@ -1,0 +1,29 @@
+#!/bin/sh -e
+
+# Produce a PATCH given by the pending changelist.
+# todo:  exit if the CL is wrong.
+
+function die(){
+    echo $1
+    exit -1
+}
+
+if [ $# -lt 1 ]
+then
+    die "usage: $0 CL-number"
+fi
+
+
+
+
+# The produced patch contains a comment with the CL description.
+
+p4-message $1| sed -e 's/^/#/'
+
+# export
+P4DIFF=diff  \
+    p4 opened -c $1 | sed -e 's/#.*$//' |\
+    p4 -x - diff -dbBNup
+
+# -d-unified
+# -b -B -N --show-c-function

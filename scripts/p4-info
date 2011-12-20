@@ -1,0 +1,18 @@
+#! /bin/bash
+
+
+# Dump the "author message" of the given CL number.
+
+dump="$(p4 changelist -o  $1)"
+
+# echo $dump
+
+user=$(echo $dump| sed 's/^.*User:[[:space:]]*\([^ ]*\)[[:space:]].*$/\1/')
+
+# --quiet
+# message=$(echo $dump| sed --quiet '/^Description:/,/^Files:/p')
+# |tail -n +2|head -n +2
+
+message=$(echo $dump| sed 's/^.*Description: \(.*\)$/\1/')
+
+echo $user $message

@@ -1,0 +1,7 @@
+#! /bin/sh -eu
+set -o pipefail
+
+
+# Print the root of the workspace,
+# which includes pwd.
+p4 client -o|grep '^Root:'|sed -e 's/^Root:[[:space:]]*//'
