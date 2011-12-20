@@ -1,6 +1,9 @@
 
 # SHELL=zsh
 
+all:
+
+
 
 install:
 	install --directory -D $(DESTDIR)/bin/
