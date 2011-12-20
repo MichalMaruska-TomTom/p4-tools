@@ -5,10 +5,10 @@ all:
 
 
 
-install:
-	install --directory -D $(DESTDIR)/bin/
-	install scripts/*[^~] $(DESTDIR)/bin/
-	# install scripts/* $(DESTDIR)/bin/
+install: all
+	install --directory -D $(DESTDIR)/usr/bin/
+	install scripts/*[^~] $(DESTDIR)/usr/bin/
+# share...
 
 
 clean:
