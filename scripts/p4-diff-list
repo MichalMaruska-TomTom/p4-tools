@@ -8,6 +8,22 @@ function die(){
     exit -1
 }
 
+
+
+while getopts :c OPT; do
+    case $OPT in
+	c|+c)
+	    P4DIFF=colordiff
+	    ;;
+	*)
+	    echo "usage: `basename $0` [+-c} [--] ARGS..."
+	    exit 2
+    esac
+done
+
+shift `expr $OPTIND - 1`
+OPTIND=1
+
 if [ $# -lt 1 ]
 then
     die "usage: $0 CL-number"
@@ -15,15 +31,15 @@ fi
 
 
 
-
 # The produced patch contains a comment with the CL description.
-
+echo "# $1"
 p4-message $1| sed -e 's/^/#/'
 
-# export
-P4DIFF=diff  \
+# export sane default. Note that the (_short_) options are for
+# diff(1) compatible!
+P4DIFF=${P4DIFF:-diff}  \
     p4 opened -c $1 | sed -e 's/#.*$//' |\
-    p4 -x - diff -dbBNup
+    p4 -x - diff -d${P4DIFFOPTIONS:-bBNup}
 
 # -d-unified
 # -b -B -N --show-c-function
