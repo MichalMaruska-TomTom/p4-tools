@@ -1,0 +1,12 @@
+Source: p4-tools
+Section: shells
+Priority: extra
+Maintainer: Michal Maruska <mmaruska@gmail.com>
+Build-Depends: @cdbs@, debhelper (>= 5)
+Standards-Version: 3.7.2
+
+Package: p4-tools
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: p4, colordiff
+Description:   Tools above the perforce CLI client: p4
