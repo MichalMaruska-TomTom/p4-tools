@@ -1,3 +1,13 @@
+p4-tools (2.0) maverick; urgency=low
+
+  * start getopt support
+  * debianization
+  * Make
+  * never have the "install" target as default!
+  * install into /usr/bin
+
+ -- Michal Maruska <mmaruska@gmail.com>  Tue, 20 Dec 2011 13:56:12 +0100
+
 p4-tools (1) unstable; urgency=low
 
   * init
