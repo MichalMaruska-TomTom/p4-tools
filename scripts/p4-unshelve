@@ -41,7 +41,8 @@ echo Now unshelving
 
 if
     echo p4 unshelve ${UNSHELVE_OPTS}  -s $from -c $to
-    p4 unshelve ${UNSHELVE_OPTS}  -s $from -c $to | colortail -k ~/tomtom/p4-unshelve.color -
+    p4 unshelve ${UNSHELVE_OPTS}  -s $from -c $to |\
+    colortail -k ${P4SHARE:-~/tomtom/}/p4-unshelve.color -
 then
     true;
 else
