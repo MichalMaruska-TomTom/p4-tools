@@ -1,0 +1,8 @@
+#! /bin/bash -e
+
+echo "Change: new"
+echo "Client: $(p4-client)"
+echo "User:  $P4USER"
+echo "Status:  new"
+echo "Description: $1"
+echo "Files: "

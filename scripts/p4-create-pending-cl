@@ -1,0 +1,4 @@
+#! /bin/bash -xu
+set -o pipefail
+
+${P4SHARE:-~/tomtom/}/new-changelist-template | p4 change -i
