@@ -11,7 +11,7 @@ function find_p4_conf() {
     dir=$1
     if [ -e $dir$P4CONFIG ];
     then
-	source $dir$P4CONFIG
+	source ./$dir$P4CONFIG
 	echo $P4CLIENT
     else
 	# stop if at /
