@@ -1,0 +1,50 @@
+#! /bin/bash
+
+# Usage:    p4-unshelve {shelved-changelist}  {local-changelist}
+#
+# it will REVERT the local-changelist and then Unshelve
+
+# todo:  when only 1 arg, run ~/tomtom/new-changelist and
+# Change 654635 created.
+#  ... how to copy the DESCRIPTION ?
+
+usage()
+{
+    echo "usage: $0 [-f] {from} {to}"
+}
+
+UNSHELVE_OPTS=""
+if [ $# -eq 3 ]
+then
+    if [ "$1" eq "-f" ]
+    then
+	UNSHELVE_OPTS="-f"
+    else
+	usage;
+	exit -1
+    fi
+fi
+
+from=$1
+to=$2
+
+if
+    p4 revert   -c $to   //...;
+then
+    true;
+else
+    echo ERROR
+fi;
+
+
+echo Now unshelving
+
+if
+    echo p4 unshelve ${UNSHELVE_OPTS}  -s $from -c $to
+    p4 unshelve ${UNSHELVE_OPTS}  -s $from -c $to | colortail -k ~/tomtom/p4-unshelve.color -
+then
+    true;
+else
+echo ERROR
+fi;
+
