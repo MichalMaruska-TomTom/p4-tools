@@ -1,0 +1,24 @@
+# -*-sh-*-
+# p4 sync output
+# green vs yellow
+COLOR green
+{
+^.* - unshelved, opened for edit.*$
+}
+
+COLOR cyan
+{
+^.* - updating .*$
+}
+
+COLOR red
+{
+^.* - can't unshelve.*$
+# ' hi emacs!
+}
+
+
+COLOR blue
+{
+^.* - also opened by maruska.*$
+}

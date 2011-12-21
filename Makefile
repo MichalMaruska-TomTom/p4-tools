@@ -4,10 +4,16 @@
 all:
 
 
+BIN_DIR:=$(DESTDIR)/usr/bin/
+SHARE_DIR:=$(DESTDIR)/usr/share/p4-tools
 
 install: all
-	install --directory -D $(DESTDIR)/usr/bin/
-	install scripts/*[^~] $(DESTDIR)/usr/bin/
+	install --directory -D $(BIN_DIR)
+	install scripts/*[^~] $(BIN_DIR)
+
+	install --directory -D $(SHARE_DIR)
+	install share/*[^~] $(SHARE_DIR)/
+
 # share...
 
 

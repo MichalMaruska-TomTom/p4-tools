@@ -1,0 +1,21 @@
+# p4 sync output
+COLOR red
+{
+^.* - deleted as .*$
+}
+
+COLOR cyan
+{
+^.* - updating .*$
+}
+
+COLOR yellow
+{
+^.* - added as
+}
+
+
+COLOR blue
+{
+^.* - refreshing
+}
