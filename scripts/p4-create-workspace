@@ -1,0 +1,43 @@
+#! /bin/bash -ue
+
+
+
+# name
+WS_NAME=$1
+# depot path
+DEPOT=$2
+
+OPTIONS="noallwrite noclobber compress locked nomodtime rmdir"
+
+
+
+if [ -n "${P4CONFIG}" ];
+then
+    echo "writing into $P4CONFIG" >&2
+    > $P4CONFIG echo "P4CLIENT=$1"
+fi
+
+
+# Now tell p4
+template=p4-new.template
+
+(
+    echo -e "Client:\t$WS_NAME"
+    echo -e "Owner:\t$P4USER"
+    echo -e "Host:\t$(hostname)"
+    #echo -e "Description"
+    echo -e "Options:\t$OPTIONS"
+    echo -e "LineEnd:\tlocal"
+    echo -e "Root:\t$(pwd)"
+    echo -e "View:"
+    # for some reason this HAS to be on a separate line:
+    echo -e "\t$DEPOT //$WS_NAME/..."
+    echo
+) > $template
+
+
+if true;
+then
+    p4 workspace -i <$template
+    rm -f $template
+fi
