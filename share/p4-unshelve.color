@@ -1,4 +1,6 @@
-# -*-sh-*-
+# fake:
+#! /usr/bin/colortail -k
+
 # p4 sync output
 # green vs yellow
 COLOR green
