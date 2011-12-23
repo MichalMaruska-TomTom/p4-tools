@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/bash -eu
 
 # Usage:    p4-unshelve {shelved-changelist}  {local-changelist}
 #
@@ -10,42 +10,70 @@
 
 usage()
 {
-    echo "usage: $0 [-f] {from} {to}"
+    echo "usage: ${0##*/} [+-t CL ] [-f] [--] CL"
+#    echo "usage: $0 [-f] {from} {to}"
 }
 
+
+DESTINATION=
 UNSHELVE_OPTS=""
-if [ $# -eq 3 ]
+
+while getopts :t:f OPT; do
+    case $OPT in
+	t|+t)
+	    # to:
+	    DESTINATION=$OPT
+	    ;;
+	f|+f)
+	    # force
+	    UNSHELVE_OPTS="-f"
+	    ;;
+	?)
+	    echo "$0: wrong option $OPT"
+	    usage
+	    exit 2
+    esac
+done
+shift $(( OPTIND - 1 ))
+OPTIND=1
+
+
+
+
+if [ $# -ne 1 ]
 then
-    if [ "$1" eq "-f" ]
-    then
-	UNSHELVE_OPTS="-f"
-    else
 	usage;
 	exit -1
-    fi
 fi
 
 from=$1
-to=$2
+
+if [ -z "$DESTINATION" ]
+then
+    DESTINATION=$(p4-create-pending-cl "unshelving $from")
+    echo "created a new Pending CL $DESTINATION" >&2
+else
+    # fixme: This is confusion:
+    # //... ?
+    if  p4 revert -c $DESTINATION ...
+    then
+	true;
+    else
+	echo ERROR
+    fi
+fi
+
+
+# echo Now unshelving
 
 if
-    p4 revert   -c $to   //...;
+    echo p4 unshelve ${UNSHELVE_OPTS}  -s $from -c $DESTINATION
+    p4 unshelve ${UNSHELVE_OPTS} -s $from -c $DESTINATION |\
+        colortail -k ${P4SHARE:-~/tomtom/}/p4-unshelve.color -
 then
     true;
 else
     echo ERROR
-fi;
-
-
-echo Now unshelving
-
-if
-    echo p4 unshelve ${UNSHELVE_OPTS}  -s $from -c $to
-    p4 unshelve ${UNSHELVE_OPTS}  -s $from -c $to |\
-    colortail -k ${P4SHARE:-~/tomtom/}/p4-unshelve.color -
-then
-    true;
-else
-echo ERROR
+    exit 1;
 fi;
 
