@@ -1,0 +1,12 @@
+#! /bin/bash
+
+# delete the pending CL.
+# If necessary, revert all the files in it.
+
+CL=$1
+
+# This fails to remove ADDED files.
+p4 revert -c $CL ...
+
+p4 changelist -d $CL
+
