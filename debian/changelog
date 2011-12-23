@@ -12,8 +12,11 @@ p4-tools (3.0) maverick; urgency=low
   * enable providing Message on CLI when creating a pending CL
   * p4-delete-cl   initial, buggy, version
   * emacs support for Diff & Merge
+  * release
+  * when Creating a pending CL, produce the Number as the only output
+  * when unshelving, create the destination, unless specified
 
- -- Michal Maruska <mmaruska@gmail.com>  Fri, 23 Dec 2011 11:49:19 +0100
+ -- Michal Maruska <mmaruska@gmail.com>  Fri, 23 Dec 2011 13:23:06 +0100
 
 p4-tools (2.0) maverick; urgency=low
 
