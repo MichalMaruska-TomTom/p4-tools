@@ -1,4 +1,6 @@
 #! /bin/bash -xu
 set -o pipefail
 
-${P4SHARE:-~/tomtom/}/new-changelist-template "$1" | p4 change -i
+${P4SHARE:-~/tomtom/}/new-changelist-template "$1" |\
+p4 change -i |\
+sed -e 's/Change \([0-9]\+\) created\./\1/'
