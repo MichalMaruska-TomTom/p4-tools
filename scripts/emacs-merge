@@ -1,0 +1,22 @@
+#! /bin/bash -e
+
+base=$1
+my=$2
+theirs=$3
+res=$4
+
+# This is problematic:
+# $res is THEN taken by p4v to replace Your copy.
+# if you touch your copy before this, p4v will get
+# into a stalemate.
+
+
+echo "base=$base res=$res ($my vs $theirs)"
+echo "base=$base res=$res ($my vs $theirs)" >&2
+
+cp -f $my $res
+exec emacsclient -c -e "(ediff-files3 \"$base\" \"$theirs\" \"$res\")"
+
+# exec cp -pf  $my $res
+# $res
+
