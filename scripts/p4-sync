@@ -1,0 +1,31 @@
+#! /bin/bash -uex
+
+
+LOGFILE=/tmp/p4.sync.$$
+
+# print the messages of acquired commits.
+p4-missing
+
+echo "p4 sync: logging into $LOGFILE"
+p4 sync > $LOGFILE
+
+# if short (<20), list & color them.
+# note:  wc --lines File  prints "# File"
+if [ $(wc --lines < "$LOGFILE") -lt 25 ]
+then
+    colortail -k ${P4SHARE:-~/tomtom/}/p4.color $LOGFILE
+fi
+
+# summary?
+# how many files
+# diffstat?
+
+# p4 resolve  ..files
+# many? list end.
+# few ->
+#   automatic?
+#   markers?  interactive?
+# dump conflicts
+p4 resolve -am
+p4 resolve -No
+
