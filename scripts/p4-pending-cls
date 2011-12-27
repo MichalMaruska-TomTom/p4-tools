@@ -7,6 +7,13 @@ p4client=$(p4-client)
 p4 changes -s pending -u $P4USER -c $p4client  |\
  sed -e "s/^Change //;s/ by $P4USER@$p4client//;s/ \*pending\*//"
 
+# todo: list the "default" if something is in there.
+
+lines=$(p4 opened -c default|wc --lines)
+if [ $lines -gt 0 ]
+then
+    echo "Default has $lines changes"
+fi
 
 
 # how to cache?
