@@ -8,6 +8,7 @@ usage(){
 
 
 delete_template=y
+dry="n";
 while getopts :fh OPT; do
     case $OPT in
 	f|+f)
@@ -16,6 +17,10 @@ while getopts :fh OPT; do
 	h|+h)
 	    usage;
 	    exit 0;
+	    ;;
+
+	d|+d)
+	    dry="y";
 	    ;;
 	*)
 	    usage;
@@ -66,8 +71,9 @@ template=p4-new.template
 ) > $template
 
 
-if true;
+if [ $dry != "y" ]
 then
-#    p4 workspace -i <$template
-    [ $delete_template = "no" ] || rm -f $template
+    p4 workspace -i <$template
 fi
+
+[ $delete_template = "no" ] || rm -f $template
