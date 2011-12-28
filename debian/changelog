@@ -1,3 +1,15 @@
+p4-tools (3.0ubuntu1~1.gbp9e4d95) UNRELEASED; urgency=low
+
+  ** SNAPSHOT build @9e4d95b21440daf46ea4c990c19893c5ef5bb67c **
+
+  * p4-unshelve: fix CLI option parsing
+  * report the Default pending CL
+  * new:  p4-sync
+  * p4-unshelve: clean up, improve Usage()
+  * p4-pending-cls: suppress misleading output
+
+ -- Michal Maruska <mmaruska@gmail.com>  Wed, 28 Dec 2011 13:41:08 +0100
+
 p4-tools (3.0) maverick; urgency=low
 
   * install "share" files
