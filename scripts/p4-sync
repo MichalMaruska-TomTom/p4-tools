@@ -13,7 +13,7 @@ p4 sync > $LOGFILE
 # note:  wc --lines File  prints "# File"
 if [ $(wc --lines < "$LOGFILE") -lt 25 ]
 then
-    colortail -k ${P4SHARE:-~/tomtom/}/p4.color $LOGFILE
+    colortail -k ${P4SHARE:-~/tomtom/}/p4-sync.color $LOGFILE
 fi
 
 # summary?

@@ -1,0 +1,12 @@
+#! /bin/bash -uex
+
+# report the last submitted CLs.
+# which were applied to your WS.
+
+
+CL=$1
+
+p4 describe $CL |\
+colortail -k  ${P4SHARE:-~/activity/tools/p4-tools/share}/p4-cl.color - |\
+less --quit-if-one-screen --RAW-CONTROL-CHARS --no-init
+

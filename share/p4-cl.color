@@ -1,0 +1,15 @@
+# p4 describe output -- the "Affected files ..." section.
+COLOR red
+{
+^.*delete.?$
+}
+
+COLOR cyan
+{
+.*edit.?$
+}
+
+COLOR yellow
+{
+^.*add.?$
+}
