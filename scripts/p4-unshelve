@@ -1,17 +1,20 @@
 #! /bin/bash -eu
 
-# Usage:    p4-unshelve {shelved-changelist}  {local-changelist}
-#
-# it will REVERT the local-changelist and then Unshelve
 
-# todo:  when only 1 arg, run ~/tomtom/new-changelist and
-# Change 654635 created.
-#  ... how to copy the DESCRIPTION ?
 
 usage()
 {
-    echo "usage: ${0##*/} [+-t CL ] [-f] [--] CL"
-#    echo "usage: $0 [-f] {from} {to}"
+    cat >&2 <<EOF
+Usage:    $0 [ -t {local-changelist} ] [-f] {shelved-changelist}
+
+If given local-changelist, it will REVERT it and then Unshelve
+  shelved-changelist into it.
+
+-f forces unshelving.
+When not given, a new pending CL is created, with a special description.
+EOF
+
+#    echo "usage: ${0##*/} [+-t CL ] [-f] [--] CL"
 }
 
 
@@ -55,7 +58,7 @@ then
 else
     # fixme: This is confusion:
     # //... ?
-    if  p4 revert -c $DESTINATION ...
+    if p4 revert -c $DESTINATION ...
     then
 	true;
     else
@@ -67,7 +70,7 @@ fi
 # echo Now unshelving
 
 if
-    echo p4 unshelve ${UNSHELVE_OPTS}  -s $from -c $DESTINATION
+    # echo p4 unshelve ${UNSHELVE_OPTS} -s $from -c $DESTINATION
     p4 unshelve ${UNSHELVE_OPTS} -s $from -c $DESTINATION |\
         colortail -k ${P4SHARE:-~/tomtom/}/p4-unshelve.color -
 then
