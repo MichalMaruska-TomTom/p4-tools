@@ -9,7 +9,10 @@ p4 changes -s pending -u $P4USER -c $p4client  |\
 
 # todo: list the "default" if something is in there.
 
-lines=$(p4 opened -c default|wc --lines)
+# File(s) not opened on this client.
+# ... is also misleading! Since it's not "client"-wise true,
+# it's restricted to -c default (pending CL).
+lines=$(p4 opened -c default 2>/dev/null |wc --lines)
 if [ $lines -gt 0 ]
 then
     echo "Default has $lines changes"
