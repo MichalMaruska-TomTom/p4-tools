@@ -1,11 +1,41 @@
 #! /bin/bash -ue
 
 
+usage(){
+    echo "usage: ${0##*/} [+-fh} [--] ARGS..."
+}
+
+
+
+delete_template=y
+while getopts :fh OPT; do
+    case $OPT in
+	f|+f)
+	    delete_template=no
+	    ;;
+	h|+h)
+	    usage;
+	    exit 0;
+	    ;;
+	*)
+	    usage;
+	    exit 2
+    esac
+done
+shift $(( OPTIND - 1 ))
+OPTIND=1
+
 
 # name
 WS_NAME=$1
 # depot path
 DEPOT=$2
+if expr match "$DEPOT" "\.\.\.$";
+then
+:
+else
+    DEPOT="$DEPOT..."
+fi
 
 OPTIONS="noallwrite noclobber compress locked nomodtime rmdir"
 
@@ -38,6 +68,6 @@ template=p4-new.template
 
 if true;
 then
-    p4 workspace -i <$template
-    rm -f $template
+#    p4 workspace -i <$template
+    [ $delete_template = "no" ] || rm -f $template
 fi
