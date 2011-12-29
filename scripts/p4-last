@@ -1,8 +1,25 @@
 #! /bin/bash -eu
 
 
+limit=20
+
+while getopts :n: OPT; do
+    case $OPT in
+	n|+n)
+	    limit=$OPTARG
+	    ;;
+	*)
+	    echo "usage: ${0##*/} [+-n} [--] ARGS..."
+	    exit 2
+    esac
+done
+shift $(( OPTIND - 1 ))
+OPTIND=1
+
+
+
 # p4 cstat | take last  HAVE
-(p4 cstat| grep -B 1 'have' |tail -n 20| grep change|sed -e 's/^.*change //') |
+(p4 cstat| grep -B 1 'have' |tail -n $(expr $limit \* 3)| grep change|sed -e 's/^.*change //') |
 (
 while  read a;
 do
