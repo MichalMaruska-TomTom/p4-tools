@@ -1,3 +1,35 @@
-#! /bin/bash -e
+#! /bin/bash -eu
 
-p4 cstat  | ${P4SHARE:-~/tomtom/}/p4-parse-cstat-version.awk
+
+simple="n"
+while getopts :s OPT; do
+    case $OPT in
+	s|+s)
+	  simple="y"
+	    ;;
+	*)
+	    echo "usage: ${0##*/} [+-s} [--] ARGS..."
+	    exit 2
+    esac
+done
+shift $(( OPTIND - 1 ))
+OPTIND=1
+
+
+# either simple or complete.
+base=$(p4 cstat | ${P4SHARE:-~/tomtom/}/p4-parse-cstat-version.awk)
+
+if [ $simple = "y" ]
+then
+    pending=""
+else
+    pending=$(p4-pending-cls |wc --lines)
+
+    if [ -n ${pending} ]
+    then
+	# ~
+	pending="~$pending"
+    fi
+fi
+
+echo $base$pending
