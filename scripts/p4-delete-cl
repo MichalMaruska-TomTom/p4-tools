@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/bash -ue
 
 # delete the pending CL.
 # If necessary, revert all the files in it.
