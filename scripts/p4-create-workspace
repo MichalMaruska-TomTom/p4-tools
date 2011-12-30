@@ -2,7 +2,7 @@
 
 
 usage(){
-    echo "usage: ${0##*/} [+-fh} [--] ARGS..."
+    echo "usage: ${0##*/} [+-fh} [--] NAME DEPOT..."
 }
 
 
