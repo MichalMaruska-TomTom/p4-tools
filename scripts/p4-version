@@ -25,10 +25,12 @@ then
 else
     pending=$(p4-pending-cls |wc --lines)
 
-    if [ -n ${pending} ]
+    if [ ${pending} -gt 0 ]
     then
 	# ~
 	pending="~$pending"
+    else
+	pending=""
     fi
 fi
 

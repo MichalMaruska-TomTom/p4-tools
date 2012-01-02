@@ -10,7 +10,8 @@
 
 # and we might add +3 as the # other changes we have
 
-BEGIN {end=0; major=0}
+# Major is never 0. Hence End is set only once, to a non-zero.
+BEGIN {end=0; major=-1}
 
 
 /^... change ([0-9])+/ {
@@ -26,7 +27,7 @@ BEGIN {end=0; major=0}
 /^... status have/ {
         major=change;
         # in state 2
-        if (end!=0)
+        if (end > 0)
                 plus++;
 };
 
