@@ -1,0 +1,21 @@
+#! /bin/bash -eu
+
+
+limit=20
+
+while getopts :n: OPT; do
+    case $OPT in
+	n|+n)
+	    limit=$OPTARG
+	    ;;
+	*)
+	    echo "usage: ${0##*/} [+-n} [--] ARGS..."
+	    exit 2
+    esac
+done
+shift $(( OPTIND - 1 ))
+OPTIND=1
+
+
+
+p4 changelists -L  -s submitted -m $limit  ...| $P4SHARE/p4-changelists.color.sed
