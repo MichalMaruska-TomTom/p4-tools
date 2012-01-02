@@ -7,7 +7,12 @@ LOGFILE=/tmp/p4.sync.$$
 p4-missing
 
 echo "p4 sync: logging into $LOGFILE"
+
+set +e
+# This can fail:  "Can't clobber" etc. But it did something
+# and we want to continue!
 p4 sync > $LOGFILE
+set -e
 
 # if short (<20), list & color them.
 # note:  wc --lines File  prints "# File"
