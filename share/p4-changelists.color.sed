@@ -1,3 +1,4 @@
+#!/bin/sed -nf
 
 #
 /^Change \([[:digit:]]\+\)/ b change
