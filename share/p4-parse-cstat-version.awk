@@ -27,7 +27,7 @@ BEGIN {end=0; major=-1; plus=0}
 /^... status have/ {
         major=change;
         # in state 2
-        if (end > 0)
+        if (end != 0)
                 plus++;
 };
 
