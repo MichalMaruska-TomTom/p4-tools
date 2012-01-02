@@ -16,6 +16,12 @@ done
 shift $(( OPTIND - 1 ))
 OPTIND=1
 
+if [ $# -gt 0 ]
+then
+    where=$1
+else
+    where=$(p4-root)/...
+fi
 
 
-p4 changelists -L  -s submitted -m $limit  ...| sed --quiet -f $P4SHARE/p4-changelists.color.sed
+p4 changelists -L  -s submitted -m $limit  $where| sed --quiet -f $P4SHARE/p4-changelists.color.sed
