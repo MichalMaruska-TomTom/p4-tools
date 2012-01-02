@@ -19,14 +19,12 @@ OPTIND=1
 
 
 # p4 cstat | take last  HAVE
-(p4 cstat "$@"|\
+
+for a in $(p4 cstat "$@"|\
  grep -B 1 'have' |\
  tail -n $(expr $limit \* 3)|\
  grep change|\
- sed -e 's/^.*change //') |
-(
-while  read a;
+ sed -e 's/^.*change //');
 do
     color green; echo -n "$a "; p4-info $a
 done
-)
