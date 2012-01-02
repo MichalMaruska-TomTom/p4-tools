@@ -15,4 +15,5 @@ user=$(echo $dump| sed 's/^.*User:[[:space:]]*\([^ ]*\)[[:space:]].*$/\1/')
 
 message=$(echo $dump| sed 's/^.*Description: \(.*\)$/\1/')
 
-echo $user $message
+
+echo $(color red) $user $(color reset) $message

@@ -27,7 +27,6 @@ OPTIND=1
 (
 while  read a;
 do
-    echo -n "$a "
-    p4-info $a
+    color green; echo -n "$a "; p4-info $a
 done
 )
