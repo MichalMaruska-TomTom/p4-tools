@@ -8,11 +8,14 @@ p4-missing
 
 echo "p4 sync: logging into $LOGFILE"
 
-set +e
 # This can fail:  "Can't clobber" etc. But it did something
 # and we want to continue!
-p4 sync > $LOGFILE
-set -e
+error=0
+if p4 sync > $LOGFILE;
+then
+    error=$?
+fi
+
 
 # if short (<20), list & color them.
 # note:  wc --lines File  prints "# File"
@@ -34,3 +37,7 @@ fi
 p4 resolve -am
 p4 resolve -No
 
+if [ $error != 0 ]
+then
+    echo "p4 sync exited with status $error"
+fi
