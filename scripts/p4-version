@@ -1,5 +1,6 @@
 #! /bin/bash -eu
 
+typeset pipefail
 
 simple="n"
 while getopts :s OPT; do
