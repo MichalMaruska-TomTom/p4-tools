@@ -11,7 +11,7 @@ echo "p4 sync: logging into $LOGFILE"
 # This can fail:  "Can't clobber" etc. But it did something
 # and we want to continue!
 error=0
-if p4 sync > $LOGFILE;
+if p4 sync | pv > $LOGFILE;
 then
     error=$?
 fi

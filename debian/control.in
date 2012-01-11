@@ -7,6 +7,6 @@ Standards-Version: 3.7.2
 
 Package: p4-tools
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, less, mmc-shell (>= 2.5.2)
+Depends: ${shlibs:Depends}, ${misc:Depends}, less, mmc-shell (>= 2.5.2), pv
 Recommends: p4, colordiff
 Description:   Tools above the perforce CLI client: p4
