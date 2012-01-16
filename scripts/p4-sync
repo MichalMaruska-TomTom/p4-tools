@@ -34,10 +34,24 @@ fi
 #   automatic?
 #   markers?  interactive?
 # dump conflicts
-p4 resolve -am
-p4 resolve -No
+
+# count the # of conflicting files:
+count=$(p4 resolve -N -am -dw 2>/dev/null |wc -l)
+
+if [ $count -gt 0 ]
+then
+    cecho red "Solving $count conflicts"
+# automatic:
+    p4 resolve -am -dw
+#
+
+    cecho red "These conflict remained: (invoke manually to fix them)"
+    p4 resolve -No
+fi
+
 
 if [ $error != 0 ]
 then
     echo "p4 sync exited with status $error"
+    exit $error
 fi
