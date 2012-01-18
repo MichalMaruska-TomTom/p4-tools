@@ -4,14 +4,14 @@
 LOGFILE=/tmp/p4.sync.$$
 
 # print the messages of acquired commits.
-p4-missing
+p4-missing "$@"
 
 echo "p4 sync: logging into $LOGFILE"
 
 # This can fail:  "Can't clobber" etc. But it did something
 # and we want to continue!
 error=0
-if p4 sync | pv > $LOGFILE;
+if p4 sync "$@" | pv > $LOGFILE;
 then
     error=$?
 fi
