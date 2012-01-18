@@ -19,7 +19,8 @@ fi
 
 # if short (<20), list & color them.
 # note:  wc --lines File  prints "# File"
-if [ $(wc --lines < "$LOGFILE") -lt 25 ]
+LINES=$(wc --lines < "$LOGFILE")
+if [ $LINES -gt 0 -a $LINES -lt 25 ]
 then
     colortail -k ${P4SHARE:-~/tomtom/}/p4-sync.color $LOGFILE
 fi
