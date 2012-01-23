@@ -1,15 +1,43 @@
-p4-tools (3.0ubuntu1~2.gbpc9c545) UNRELEASED; urgency=low
+p4-tools (3.1) release; urgency=low
 
-  ** SNAPSHOT build @c9c5450050a9e29090a61bd6efa2ff32cf6abb5e **
-
-  * snapshot-build
   * new:  p4-describe
   * p4-create-workspace:  -f option to support debugging. Also append
     "..." if necessary
   * new: p4-last
   * p4-create-workspace  dry
+  * p4-last:  tune the number of entries listed
+  * p4-version: support a more informative format (default now),
+  * p4-last  pass $@ to  csctat. So limiting to certain sub-file-tree is
+    possible.
+  * reformat
+  * enforce Bash to check ...
+  * make the usage more informative
+  * resume/finish p4-sync after  can't clobber... "failure"
+  * p4-version on virgin workspace with 1st changelist reverted
+  * p4-history  colored
+  * invoke SED on that script
+  * fix
+  * p4-version: try to list the # of addition Have CLs
+  * p4-version ensure "added" count for bare/virgin/just-created
+    workspace.
+  * skip empty lines
+  * p4-history  +x
+  * colorize more
+  * Avoid losing the terminal ... to print colors
+  * p4-history:  default to whole workspace!
+  * avoid pipe, to keep terminal -> color
+  * sync: provide however an indication of an error
+  * p4-info:  add the time/date  and fix the SED (use p switch for S).
+  * p4-describe: for PENDING CLs ... produce the diff by p4-diff,
+  * we depend on COLOR command
+  * p4-version:  detect failures in pipelins
+  * pv:  show progress during long p4-sync.
+  * p4-sync:  more verbosity when conflicts appear
+  * check all args provided
+  * don't bother displaying an empty file
+  * support p4-sync (& p4-missing) with a specified path
 
- -- Michal Maruska <mmaruska@gmail.com>  Thu, 29 Dec 2011 10:35:20 +0100
+ -- Michal Maruska <mmaruska@gmail.com>  Mon, 23 Jan 2012 10:04:23 +0100
 
 p4-tools (3.0ubuntu1~1.gbp9e4d95) UNRELEASED; urgency=low
 
