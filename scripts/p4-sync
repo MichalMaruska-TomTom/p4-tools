@@ -45,9 +45,13 @@ then
 # automatic:
     p4 resolve -am -dw
 #
-
-    cecho red "These conflict remained: (invoke manually to fix them)"
-    p4 resolve -No
+    # fixme: only if indeed some remained!
+    count=$(p4 resolve -N 2>/dev/null |wc -l)
+    if [ $count -gt 0 ]
+    then
+	cecho red "These conflicts remained: (invoke manually to fix them)"
+	p4 resolve -No
+    fi
 fi
 
 
