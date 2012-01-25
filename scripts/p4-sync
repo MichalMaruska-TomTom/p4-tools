@@ -1,4 +1,4 @@
-#! /bin/bash -uex
+#! /bin/bash -ue
 
 
 LOGFILE=/tmp/p4.sync.$$
