@@ -41,15 +41,15 @@ count=$(p4 resolve -N -am -dw 2>/dev/null |wc -l)
 
 if [ $count -gt 0 ]
 then
-    cecho red "Solving $count conflicts"
-# automatic:
+    # automatic:
+    cecho red "Solving automatically $count conflicts"
     p4 resolve -am -dw
-#
+
     # fixme: only if indeed some remained!
     count=$(p4 resolve -N 2>/dev/null |wc -l)
     if [ $count -gt 0 ]
     then
-	cecho red "These conflicts remained: (invoke manually to fix them)"
+	cecho red "These $count conflicts remained: invoking (manual) p4 resolve"
 	p4 resolve -No
     fi
 fi
@@ -57,6 +57,6 @@ fi
 
 if [ $error != 0 ]
 then
-    echo "p4 sync exited with status $error"
+    cecho red "p4 sync exited with status $error"
     exit $error
 fi
