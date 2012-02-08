@@ -11,7 +11,7 @@
 # and we might add +3 as the # other changes we have
 
 # Major is never 0. Hence End is set only once, to a non-zero.
-BEGIN {end=0; major=-1; plus=0}
+BEGIN {end=0; major=-1; plus=0; minus=0}
 
 
 /^... change ([0-9])+/ {
@@ -33,6 +33,7 @@ BEGIN {end=0; major=-1; plus=0}
 
 
 /^... status (partial|need)/ {
+        minus++;
         if (end == 0) {
                 #enter state 2
                 end=major;
@@ -47,8 +48,8 @@ END {
                 end=major;
                 # plus = 0;
         }
-        if (plus!=0)
-                printf "%d+%d\n", end, plus;
+        if (plus!=0 || minus != 0)
+                printf "%d+%d-%d\n", end, plus, minus;
         else
                 printf "%d\n", end;
 }
