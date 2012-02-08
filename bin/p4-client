@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/sh -eu
 
 # Determine the current P4 client, without contacting the server
 # because that is slow. Try:
@@ -21,20 +21,19 @@ function find_p4_conf() {
 	then
 	    exit -1;
 	fi
-
 	find_p4_conf "../$dir"
     fi
 }
 
 # find out p4client
 
-if [ -z "$P4CLIENT" ]
+if [ -z "${P4CLIENT-}" ]
 then
     if [ -z "$P4CONFIG" ]
     then
 	exit -1
     else
-	find_p4_conf ""
+	find_p4_conf "./"
     fi
 else
     echo $P4CLIENT
