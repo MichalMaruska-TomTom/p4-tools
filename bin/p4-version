@@ -1,6 +1,6 @@
-#! /bin/bash -eu
+#! /bin/bash -euf
 
-typeset pipefail
+set -o pipefail
 
 simple="n"
 while getopts :s OPT; do
