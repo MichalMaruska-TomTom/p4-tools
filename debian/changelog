@@ -1,3 +1,23 @@
+p4-tools (3.5) release; urgency=low
+
+  * version:  do fail/exit on pipe error (fix)
+  * use bash.  sh does not understand function xx(), and the pipefail option
+
+ -- Michal Maruska <mmaruska@gmail.com>  Wed, 21 Mar 2012 13:20:57 +0100
+
+p4-tools (3.4) release; urgency=low
+
+  * sync: don't threaten about non-existing conflicts
+  * sync: don't trace -x
+  * rename  script -> bin
+  * p4-client:  run with -ue. also ./ explains more that  ""
+  * some more -eu
+  * create-pending-cl:  usage()
+  * history: pass the $@ to p4
+  * count correctly the Missing (submitted) CLs.
+
+ -- Michal Maruska <mmaruska@gmail.com>  Wed, 08 Feb 2012 17:06:32 +0100
+
 p4-tools (3.1) release; urgency=low
 
   * new:  p4-describe
