@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash -eu
 
 # Produce a PATCH given by the pending changelist.
 # todo:  exit if the CL is wrong.
