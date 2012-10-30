@@ -3,13 +3,28 @@
 
 limit=20
 
-while getopts :n: OPT; do
+
+usage()
+{
+    cat <<EOF
+usage: ${0##*/} [+-n limit] [-h] [--] ARGS...
+
+Show the last Changelists contained/"synced" in your workspace.
+
+EOF
+}
+
+while getopts :hn: OPT; do
     case $OPT in
 	n|+n)
 	    limit=$OPTARG
 	    ;;
+	h)
+	    usage
+	    exit 0
+	    ;;
 	*)
-	    echo "usage: ${0##*/} [+-n} [--] ARGS..."
+	    usage
 	    exit 2
     esac
 done

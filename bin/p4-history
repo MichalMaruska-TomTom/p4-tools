@@ -3,13 +3,30 @@
 
 limit=20
 
-while getopts :n: OPT; do
+usage()
+{
+    cat <<EOF
+usage: ${0##*/} [+-n number] [--] ARGS...
+
+Shows the submitted changelists...
+-n         possibly with a limit.
+ARGS...   limits to that part of repository.
+
+EOF
+}
+
+
+while getopts :n:h OPT; do
     case $OPT in
 	n|+n)
 	    limit=$OPTARG
 	    ;;
+	h)
+	    usage
+	    exit 0
+	    ;;
 	*)
-	    echo "usage: ${0##*/} [+-n} [--] ARGS..."
+	    usage
 	    exit 2
     esac
 done
