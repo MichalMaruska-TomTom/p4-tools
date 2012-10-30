@@ -41,4 +41,5 @@ else
 fi
 
 
-p4 changelists -L  -s submitted -m $limit  $where| sed --quiet -f $P4SHARE/p4-changelists.color.sed
+p4 changelists -L -s submitted -m $limit $where |\
+ sed --quiet -f $P4SHARE/p4-changelists.color.sed
