@@ -1,3 +1,10 @@
+p4-tools (3.8) release; urgency=low
+
+  * [FIX] p4-version: work correctly when the first CL was not fully synced.
+  * Include useful usage/description for p4-version
+
+ -- Michal Maruska <mmaruska@gmail.com>  Thu, 29 Nov 2012 09:57:08 +0100
+
 p4-tools (3.7) release; urgency=low
 
   * a bit of self-documentation (-h)
