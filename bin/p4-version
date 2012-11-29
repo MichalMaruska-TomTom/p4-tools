@@ -2,14 +2,30 @@
 
 set -o pipefail
 
+usage()
+{
+    cat <<EOF
+usage: ${0##*/} [+-s] [--] ARGS...
+
+outputs description of the p4 status:
+CL-version[+count][-count][~usercount]
++count  how many other CLs fully synced after  CL-version
+-count  how many missing / not fully synced after CL-version
+~usercount ... how many pending CLs the user has (including default)
+EOF
+}
+
 simple="n"
-while getopts :s OPT; do
+while getopts :sh OPT; do
     case $OPT in
 	s|+s)
 	  simple="y"
 	    ;;
+	h)
+	    usage
+	    exit 0;;
 	*)
-	    echo "usage: ${0##*/} [+-s} [--] ARGS..."
+	    usage
 	    exit 2
     esac
 done
