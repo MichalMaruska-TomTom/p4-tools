@@ -1,3 +1,9 @@
+p4-tools (3.9) release; urgency=low
+
+  * p4-diff-list:  handle New - added - files, and drop the standard diff header.
+
+ -- Michal Maruska <mmaruska@gmail.com>  Tue, 04 Jun 2013 09:07:29 +0200
+
 p4-tools (3.8) release; urgency=low
 
   * [FIX] p4-version: work correctly when the first CL was not fully synced.
