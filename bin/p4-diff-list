@@ -30,6 +30,8 @@ then
 fi
 
 
+SKIP_AWK_FILE=${P4SHARE:-~/tomtom/}/skip-header.awk
+echo $SKIP_AWK_FILE
 
 # The produced patch contains a comment with the CL description.
 echo "# $1"
@@ -39,7 +41,28 @@ p4-message $1| sed -e 's/^/#/'
 # diff(1) compatible!
 P4DIFF=${P4DIFF:-diff}  \
     p4 opened -c $1 | sed -e 's/#.*$//' |\
-    p4 -x - diff -d${P4DIFFOPTIONS:-bBNup}
+    p4 -x - diff -d${P4DIFFOPTIONS:-bBNup}  | awk -f $SKIP_AWK_FILE
+# strip the +++ --- lines after ===
 
 # -d-unified
 # -b -B -N --show-c-function
+
+
+# p4 depot ... root
+#
+
+# added files: diff with  /dev/null
+p4 opened -c $1  | \
+    grep  -F  -e '- add' |  sed -e 's/#.*$//'  |\
+while read file;
+do
+    depotfile=$(p4 where $file| cut -f 1 -d ' ')
+    info=$(p4 where $file| cut -f 3 -d ' ')
+    (echo "==== ${depotfile}#0 - $info ===="; diff -${P4DIFFOPTIONS:-bBNup} /dev/null $info ) | awk -f $SKIP_AWK_FILE
+    #xargs --replace={} --max-lines 1 diff {} /dev/null
+done
+
+
+
+
+
