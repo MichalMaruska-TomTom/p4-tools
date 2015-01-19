@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/zsh -eu
 
 usage() {
     cat <<EOF
@@ -34,10 +34,10 @@ dump="$(p4 changelist -o  $1)"
 # if [[ $verbose = yes ]]; then echo $dump;fi
 
 # Now extract different parts:
-user=$(echo $dump| sed --quiet 's/^.*User:[[:space:]]*\([^ ]*\)[[:space:]].*$/\1/p')
+user=$(echo $dump| sed --quiet 's/^User:[[:space:]]*\([^ ]*\)[[:space:]]*$/\1/p')
 
 # Date:   2012/01/06 11:51:29
-date=$(echo $dump| sed --quiet 's/^.*Date:[[:space:]]*\([0-9/\t :]\+\).*$/\1/p')
+date=$(echo $dump| sed --quiet 's/^Date:[[:space:]]*\([0-9/\t :]\+\).*$/\1/p')
 #2012/01/06 11:51:29
 
 
@@ -45,7 +45,7 @@ date=$(echo $dump| sed --quiet 's/^.*Date:[[:space:]]*\([0-9/\t :]\+\).*$/\1/p')
 # message=$(echo $dump| sed --quiet '/^Description:/,/^Files:/p')
 # |tail -n +2|head -n +2
 
-message=$(echo $dump| sed --quiet 's/^.*Description: \(.*\)$/\1/p')
+message=$(echo $dump| sed --quiet 's/^Description: \(.*\)$/\1/p')
 
 
 echo $(color red) $user $(color blue) $date $(color reset) $message
