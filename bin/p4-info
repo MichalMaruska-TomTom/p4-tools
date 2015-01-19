@@ -4,7 +4,7 @@
 # Dump the "author message" of the given CL number.
 
 dump="$(p4 changelist -o  $1)"
-# echo $dump
+# if [[ $verbose = yes ]]; then echo $dump;fi
 
 
 # Now extract different parts:
