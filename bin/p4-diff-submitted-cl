@@ -1,0 +1,35 @@
+#! /bin/bash -eu
+
+# produce (unified) diff, valid for patch(1), out of a submitted CL.
+
+usage()
+{
+    echo "$0 usage: $0 {CL}"
+}
+
+
+CL=$1
+
+if false;
+then
+    p4 describe -s $CL | head -n -1 |\
+    gawk  'BEGIN {silent=1};
+/^Affected files/ {silent=0;getline;getline};
+  {if (!silent) print};'                   |\
+    grep 'edit$' |\
+    sed -e 's/^... //;s/ edit$//' |\
+    while read file;
+    do
+	version=${file#*#}
+	filename=${file%\#[0-9]*}
+	previous=$(expr $version - 1)
+    # echo $(p4 where  $filename)
+	p4 diff2 -u -du "${filename}#$previous" $file
+    done
+
+else
+    # simpler:
+    prev=$(expr $CL - 1)
+    depotpath=""
+    p4 diff2 -u "${depotpath}...@$prev" "${depotpath}...@$CL"
+fi
