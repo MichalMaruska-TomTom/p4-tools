@@ -1,18 +1,28 @@
 #! /bin/bash -ue
 
+
+usage() {
+    cat <<EOF
+usage: ${0##*/} [+-c] [--] ARGS...
+
 # report the last submitted CLs.
 # which were applied to your WS.
-
+EOF
+}
 
 diffoption=""
 
-while getopts :c OPT; do
+while getopts :ch OPT; do
     case $OPT in
 	c|+c)
 	    diffoption+="-c"
 	    ;;
+	h)
+	    usage
+	    exit 0
+	    ;;
 	*)
-	    echo "usage: ${0##*/} [+-c} [--] ARGS..."
+	    usage >&2
 	    exit 2
     esac
 done
