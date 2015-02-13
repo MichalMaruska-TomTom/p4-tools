@@ -1,4 +1,5 @@
-#!/bin/bash -eu
+#!/bin/zsh -eu
+unsetopt FUNCTION_ARGZERO
 
 # Produce a PATCH given by the pending changelist.
 # todo:  exit if the CL is wrong.
@@ -46,16 +47,23 @@ fi
 
 SKIP_HEADER_AWK=${P4SHARE:-~/repo/p4-tools/share/}/skip-header.awk
 SKIP_MIDDLE_FILE=${P4SHARE:-~/repo/p4-tools/share/}/skip-header2.awk
-# echo $SKIP_HEADER_AWK >&2
+SKIP_NULL_HEADER=${P4SHARE:-~/repo/p4-tools/share/}/skip-null-header.awk
 
 # The produced patch contains a comment with the CL description.
 echo "# $1"
 p4-message $1| sed -e 's/^/#/'
 
+# bash returns 1 string w/o the newlines!
+# zsh with newlines !!
+cl_info=$(p4 opened -c $1)
+cl_files=$(echo $cl_info| grep -F  -e '- edit change '|sed -e 's/#.*$//')
+files_added=($(echo $cl_info| grep  -F  -e '- add change '|sed -e 's/#.*$//'))
+files_deleted=($(echo $cl_info| grep  -F  -e ' - delete change '|sed -e 's/#.*$//'))
+
 # export sane default. Note that the (_short_) options are for
 # diff(1) compatible!
 P4DIFF=${P4DIFF:-diff}  \
-    p4 opened -c $1 | sed -e 's/#.*$//' |\
+    echo $cl_files |\
     p4 -x - diff -d${P4DIFFOPTIONS:-bBNup} |\
     if [ $plain_diff = 0 ]; then
        awk -f $SKIP_HEADER_AWK |\
@@ -68,23 +76,28 @@ P4DIFF=${P4DIFF:-diff}  \
 
 # -d-unified
 # -b -B -N --show-c-function
-
-
 # p4 depot ... root
-#
 
-# added files: diff with  /dev/null
-p4 opened -c $1  | \
-    grep  -F  -e '- add' |  sed -e 's/#.*$//'  |\
-while read file;
+
+
+# ADDED files: diff with  /dev/null
+# =====
+for file ($files_added)
 do
     depotfile=$(p4 where $file| cut -f 1 -d ' ')
-    info=$(p4 where $file| cut -f 3 -d ' ')
-    (echo "==== ${depotfile}#0 - $info ===="; diff -${P4DIFFOPTIONS:-bBNup} /dev/null $info ) | awk -f $SKIP_HEADER_AWK
+    local_file=$(p4 where $file| cut -f 3 -d ' ')
+    {
+      # no more needed:, or is it?
+	echo "==== ${depotfile}#0 - $local_file ====";
+	# :-bB
+	# make it relative filename:
+	diff -${P4DIFFOPTIONS-Nup} /dev/null $local_file |\
+        if [ $plain_diff = 0 ]; then
+	    awk -f $SKIP_NULL_HEADER
+	else
+	    cat;
+	fi
+    }
     #xargs --replace={} --max-lines 1 diff {} /dev/null
 done
-
-
-
-
 
