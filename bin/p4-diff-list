@@ -101,3 +101,41 @@ do
     #xargs --replace={} --max-lines 1 diff {} /dev/null
 done
 
+for file ($files_deleted)
+do
+    #p4 print to recover the original contents:
+
+    depotfile=$(p4 where $file| cut -f 1 -d ' ')
+    local_file=$(p4 where $file| cut -f 3 -d ' ')
+
+    # no. keep it absolute.
+    # local_file=${local_file:$#root}
+
+    # might have to create dirs?
+    if [ ! -s $local_file ]; then
+	mkdir -p "$(dirname $local_file)"
+	p4 print $local_file > $local_file
+
+	if [ $VERBOSE = "y" ]; then
+	    echo "recovered the original content into $local_file">&2;
+	fi
+    fi
+
+    if [ $VERBOSE = "y" ]; then echo "next file: $local_file">&2; fi
+
+    {
+      # no more needed:, or is it?
+	# not this:
+	# echo "==== ${depotfile}#0 - $local_file ====";
+
+	# :-bB
+	# make it relative filename:
+	diff -${P4DIFFOPTIONS-Nup} $local_file /dev/null |\
+        if [ $plain_diff = 0 ]; then
+	    awk -f $SKIP_NULL_HEADER
+	else
+	    cat;
+	fi
+    }
+    rm -f $local_file
+done
