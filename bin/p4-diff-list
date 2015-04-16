@@ -13,7 +13,7 @@ function die(){
 
 usage() {
 cat <<EOF
-usage: `basename $0` [+-c] [-d] [-v] [--] ARGS...
+usage: `basename $0` [+-c] [-d] [-v] [--] CL-number
 -c  colordiff
 -d  plain diff, no doctoring
 -v  verbose
@@ -52,7 +52,9 @@ then
 fi
 
 
+# skip 2 lines after ==== header line.  Not needed anymore?
 SKIP_HEADER_AWK=${P4SHARE:-~/repo/p4-tools/share/}/skip-header.awk
+#
 SKIP_MIDDLE_FILE=${P4SHARE:-~/repo/p4-tools/share/}/skip-header2.awk
 SKIP_NULL_HEADER=${P4SHARE:-~/repo/p4-tools/share/}/skip-null-header.awk
 
@@ -60,8 +62,8 @@ SKIP_NULL_HEADER=${P4SHARE:-~/repo/p4-tools/share/}/skip-null-header.awk
 echo "# $1"
 echo -n "#"; p4-message $1
 
-# bash returns 1 string w/o the newlines!
-# zsh with newlines !!
+
+# bash returns 1 string w/o the newlines, that's why I use zsh (zsh with newlines)!
 cl_info=$(p4 opened -c $1)
 cl_files=$(echo $cl_info| grep -F  -e '- edit change '|sed -e 's/#.*$//')
 files_added=($(echo $cl_info| grep  -F  -e '- add change '|sed -e 's/#.*$//'))
@@ -83,9 +85,28 @@ P4DIFF=${P4DIFF:-diff}  \
     if [ $plain_diff = 0 ]; then
        awk -f $SKIP_HEADER_AWK |\
        awk -f $SKIP_MIDDLE_FILE
+#       awk -v ROOT=$root -f $RELATIVE_DIFF_FILENAMES
+# fixme: -x is a generic p4(1) option to "read named files as xargs"
     else
        cat
     fi
+
+#       sed -F "+++ $root"
+
+
+# for a removed file I see this:
+# --- depot name with timestamp
+# ==== depot name#0 - /path ====
+# --- local
+# +++ /dev/null
+# - //#1 - branche ..
+
+# for that I see my local path in Fisheye.
+# When I cut:
+# --- depot
+# +++ /dev/null
+# -//...#1
+# I see the depot path.
 
 # strip the +++ --- lines after ===
 
@@ -94,7 +115,9 @@ P4DIFF=${P4DIFF:-diff}  \
 # p4 depot ... root
 
 
+# mmc: I currently don't have a CL with both added & opened files :(
 
+# echo "now for the ADDed"
 # ADDED files: diff with  /dev/null
 # =====
 for file ($files_added)
@@ -116,6 +139,16 @@ do
     #xargs --replace={} --max-lines 1 diff {} /dev/null
 done
 
+
+# diff A B > p
+# patch < p  will add the B-A difference?
+# the filename is taken from ?
+
+# so,  print> old & diff  old /dev/null.
+
+#
+
+# set -x
 for file ($files_deleted)
 do
     #p4 print to recover the original contents:
@@ -154,3 +187,14 @@ do
     }
     rm -f $local_file
 done
+
+
+# for deleted:
+# now I remove the head & then:
+# ==== //depot-linux/cc/platform/projects/android/branch/kernel/main/mydroid/external/opencore/android/author/MODULE_LICENSE_APACHE2#0 - /home/michal/perforce/mfd/mydroid/external/opencore/android/author/MODULE_LICENSE_APACHE2 ====
+#--- /home/michal/perforce/mfd/mydroid/external/opencore/android/author/MODULE_LICENSE_APACHE2	2015-02-11 10:52:34.386817618 +0100
+#+++ /dev/null	2015-02-02 09:49:33.613650043 +0100
+
+# I remove the ====
+# so the review has Deleted, but my local paths. stupid.
+
