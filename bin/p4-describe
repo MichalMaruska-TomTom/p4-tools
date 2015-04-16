@@ -1,18 +1,28 @@
 #! /bin/bash -ue
 
+
+usage() {
+    cat <<EOF
+usage: ${0##*/} [+-c] [--] ARGS...
+
 # report the last submitted CLs.
 # which were applied to your WS.
-
+EOF
+}
 
 diffoption=""
 
-while getopts :c OPT; do
+while getopts :ch OPT; do
     case $OPT in
 	c|+c)
 	    diffoption+="-c"
 	    ;;
+	h)
+	    usage
+	    exit 0
+	    ;;
 	*)
-	    echo "usage: ${0##*/} [+-c} [--] ARGS..."
+	    usage >&2
 	    exit 2
     esac
 done
@@ -22,15 +32,14 @@ OPTIND=1
 CL=$1
 
 
-
-
 (
     p4 describe $CL |\
-colortail -k  ${P4SHARE:-~/activity/tools/p4-tools/share}/p4-cl.color -;
-if p4-pending-cls|grep $CL;
-then
-    p4-diff-list $diffoption $CL
-fi
+    colortail -k  ${P4SHARE:-~/repo/p4-tools/share}/p4-cl.color -;
+# add some more:
+    if p4-pending-cls|grep $CL;
+    then
+	p4-diff-list $diffoption $CL
+    fi
 ) |\
 less --quit-if-one-screen --RAW-CONTROL-CHARS --no-init
 

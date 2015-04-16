@@ -16,7 +16,7 @@ fi
 
 
 p4 changelist -o  $1|\
-sed --quiet '/^Description:/,/^Files:/p'|tail -n +2|head -n +2
+sed --quiet '/^Description:/,/^Files:/p'|tail -n +2|head -n +2|tail -c +2
 
 # '/WORD1/,/WORD2/p'
 #awk '/^Description:/,/^Files:/'
