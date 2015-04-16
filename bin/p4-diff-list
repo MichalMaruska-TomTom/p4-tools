@@ -108,13 +108,6 @@ P4DIFF=${P4DIFF:-diff}  \
 # -//...#1
 # I see the depot path.
 
-# strip the +++ --- lines after ===
-
-# -d-unified
-# -b -B -N --show-c-function
-# p4 depot ... root
-
-
 # mmc: I currently don't have a CL with both added & opened files :(
 
 # echo "now for the ADDed"
@@ -139,14 +132,11 @@ do
     #xargs --replace={} --max-lines 1 diff {} /dev/null
 done
 
-
 # diff A B > p
 # patch < p  will add the B-A difference?
 # the filename is taken from ?
 
 # so,  print> old & diff  old /dev/null.
-
-#
 
 # set -x
 for file ($files_deleted)
@@ -197,4 +187,3 @@ done
 
 # I remove the ====
 # so the review has Deleted, but my local paths. stupid.
-
