@@ -1,24 +1,28 @@
 #!/bin/zsh -eu
 unsetopt FUNCTION_ARGZERO
 
+# todo:  -c should be -c CL, and --color or -C.
+
 # Produce a PATCH given by the pending changelist.
 # todo:  exit if the CL is wrong.
 
 function die(){
-    echo $1
-    exit -1
+    echo $1>&2
+    exit 1
 }
 
 usage() {
 cat <<EOF
-usage: `basename $0` [+-c] [-d] [--] ARGS...
+usage: `basename $0` [+-c] [-d] [-v] [--] ARGS...
 -c  colordiff
 -d  plain diff, no doctoring
+-v  verbose
 EOF
 }
 
 plain_diff=0
-while getopts :cdh OPT; do
+VERBOSE=n
+while getopts :cdhv OPT; do
     case $OPT in
 	c|+c)
 	    P4DIFF=colordiff
@@ -29,6 +33,9 @@ while getopts :cdh OPT; do
 	h)
 	    usage
 	    exit 0
+	    ;;
+	v)
+	    VERBOSE=y
 	    ;;
 	*)
 	    usage >&2
@@ -60,6 +67,14 @@ cl_files=$(echo $cl_info| grep -F  -e '- edit change '|sed -e 's/#.*$//')
 files_added=($(echo $cl_info| grep  -F  -e '- add change '|sed -e 's/#.*$//'))
 files_deleted=($(echo $cl_info| grep  -F  -e ' - delete change '|sed -e 's/#.*$//'))
 
+if [ $VERBOSE = "y" ]; then
+    {
+    echo "p4 opened returned: "
+    echo $cl_info
+    echo "========"
+    echo $cl_files >&2
+    } >&2
+fi
 # export sane default. Note that the (_short_) options are for
 # diff(1) compatible!
 P4DIFF=${P4DIFF:-diff}  \
