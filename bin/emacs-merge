@@ -1,5 +1,7 @@
 #! /bin/bash -e
 
+# Invoke Emacs to merge  Base --- ours   \ merge
+#                           \_____theirs /
 base=$1
 my=$2
 theirs=$3
