@@ -36,12 +36,12 @@ from=$1
 to=$2
 CL=$3
 
-patch_file=$(readlink --canonicalize-missing $CL-full.diff)
+# how depth is a path?
+depth=$(realpath $from |tr '/' '\n'|wc -l)
+patch_file=$(realpath --canonicalize-missing $CL-full.diff)
 
 cd $from
-# todo: trim the initial tab:
 msg=$(p4-message $CL)
-
 p4-diff-list -d $CL > $patch_file
 
 cd $to
@@ -49,4 +49,6 @@ cd $to
 newCL=$(p4-create-pending-cl "$msg")
 echo "** new pending CL is $newCL" >&2
 p4-apply-patch.awk -v CL=$newCL < $patch_file
-patch -p0 < $patch_file
+# if added -p0
+# otherwise the depth of the root!
+patch -p$depth < $patch_file
