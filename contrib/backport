@@ -1,0 +1,52 @@
+#! /usr/bin/zsh -feu
+
+usage()
+{
+cat <<EOF
+usage: ${0##*/} [+-h] [--] source destination CL
+SOURCE   ... directory of the workspace
+DESTINATION
+CL       ... from SOURCE
+EOF
+}
+
+
+while getopts :h OPT; do
+    case $OPT in
+	h|+h)
+	    usage
+	    exit 0
+	    ;;
+	*)
+	    usage >&2
+	    exit 2
+    esac
+done
+shift OPTIND-1
+OPTIND=1
+
+
+if [ $# -lt 3 ]; then
+    usage >&2
+    exit 1
+fi
+
+from=$1
+# must be relative to $2
+to=$2
+CL=$3
+
+patch_file=$(readlink --canonicalize-missing $CL-full.diff)
+
+cd $from
+# todo: trim the initial tab:
+msg=$(p4-message $CL)
+
+p4-diff-list -d $CL > $patch_file
+
+cd $to
+
+newCL=$(p4-create-pending-cl "$msg")
+echo "** new pending CL is $newCL" >&2
+p4-apply-patch.awk -v CL=$newCL < $patch_file
+patch -p0 < $patch_file
