@@ -51,7 +51,7 @@ SKIP_NULL_HEADER=${P4SHARE:-~/repo/p4-tools/share/}/skip-null-header.awk
 
 # The produced patch contains a comment with the CL description.
 echo "# $1"
-p4-message $1| sed -e 's/^/#/'
+echo -n "#"; p4-message $1
 
 # bash returns 1 string w/o the newlines!
 # zsh with newlines !!
