@@ -8,15 +8,29 @@ function die(){
     exit -1
 }
 
+usage() {
+cat <<EOF
+usage: `basename $0` [+-c] [-d] [--] ARGS...
+-c  colordiff
+-d  plain diff, no doctoring
+EOF
+}
 
-
-while getopts :c OPT; do
+plain_diff=0
+while getopts :cdh OPT; do
     case $OPT in
 	c|+c)
 	    P4DIFF=colordiff
 	    ;;
+	d|+d)
+	    plain_diff=1
+	    ;;
+	h)
+	    usage
+	    exit 0
+	    ;;
 	*)
-	    echo "usage: `basename $0` [+-c} [--] ARGS..."
+	    usage >&2
 	    exit 2
     esac
 done
@@ -30,8 +44,9 @@ then
 fi
 
 
-SKIP_AWK_FILE=${P4SHARE:-~/tomtom/}/skip-header.awk
-echo $SKIP_AWK_FILE
+SKIP_HEADER_AWK=${P4SHARE:-~/repo/p4-tools/share/}/skip-header.awk
+SKIP_MIDDLE_FILE=${P4SHARE:-~/repo/p4-tools/share/}/skip-header2.awk
+# echo $SKIP_HEADER_AWK >&2
 
 # The produced patch contains a comment with the CL description.
 echo "# $1"
@@ -41,7 +56,14 @@ p4-message $1| sed -e 's/^/#/'
 # diff(1) compatible!
 P4DIFF=${P4DIFF:-diff}  \
     p4 opened -c $1 | sed -e 's/#.*$//' |\
-    p4 -x - diff -d${P4DIFFOPTIONS:-bBNup}  | awk -f $SKIP_AWK_FILE
+    p4 -x - diff -d${P4DIFFOPTIONS:-bBNup} |\
+    if [ $plain_diff = 0 ]; then
+       awk -f $SKIP_HEADER_AWK |\
+       awk -f $SKIP_MIDDLE_FILE
+    else
+       cat
+    fi
+
 # strip the +++ --- lines after ===
 
 # -d-unified
@@ -58,7 +80,7 @@ while read file;
 do
     depotfile=$(p4 where $file| cut -f 1 -d ' ')
     info=$(p4 where $file| cut -f 3 -d ' ')
-    (echo "==== ${depotfile}#0 - $info ===="; diff -${P4DIFFOPTIONS:-bBNup} /dev/null $info ) | awk -f $SKIP_AWK_FILE
+    (echo "==== ${depotfile}#0 - $info ===="; diff -${P4DIFFOPTIONS:-bBNup} /dev/null $info ) | awk -f $SKIP_HEADER_AWK
     #xargs --replace={} --max-lines 1 diff {} /dev/null
 done
 
