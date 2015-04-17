@@ -27,7 +27,7 @@ EOF
 
 MYNAME=maruska
 DEPOT=CR-DEPOT-LINUX
-new=y
+create_new_review=y
 VERBOSE=n
 # could expand an array to @A1 @A2 ...
 REVIEWER=@java
@@ -46,7 +46,7 @@ while getopts :hr:dve OPT; do
 	    VERBOSE=y
 	    ;;
 	r)
-	    new=n
+	    create_new_review=n
 	    review_nr="$OPTARG"
 	    ;;
 	*)
@@ -73,7 +73,7 @@ p4-diff-list $CL > $patchfile
 
 if [ $VERBOSE = y ]; then set -x;fi
 
-if [ $new = y ]; then
+if [ $create_new_review = y ]; then
     $CRUCIBLE --user $MYNAME --moderator $MYNAME \
 	--title $RW_NAME  --file $patchfile --noanchor \
 	$DEPOT $REVIEWER
