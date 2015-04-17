@@ -74,7 +74,8 @@ patchfile=$1.diff
 RW_NAME="$(p4-message $CL)"
 
 if [ $VERBOSE = y ]; then set -x;fi
-p4-diff-list $CL > $patchfile
+
+P4DIFF="diff --unified=30 -b -B -N --show-c-function" p4-diff-list $CL > $patchfile
 
 if [ $VERBOSE = y ]; then set -x;fi
 
