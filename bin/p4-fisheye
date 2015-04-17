@@ -1,6 +1,8 @@
 #! /usr/bin/zsh -feu
 
 CRUCIBLE=crucible.py
+# fixme:
+OPTIONS=(--noanchor)
 
 usage()
 {
@@ -32,8 +34,11 @@ VERBOSE=n
 # could expand an array to @A1 @A2 ...
 REVIEWER=@java
 
-while getopts :hr:dve OPT; do
+while getopts :har:dve OPT; do
     case $OPT in
+	a)
+	    OPTIONS=(--repository depot-linux)
+	    ;;
 	h|+h)
 	    usage
 	    exit 0
@@ -75,8 +80,8 @@ if [ $VERBOSE = y ]; then set -x;fi
 
 if [ $create_new_review = y ]; then
     $CRUCIBLE --user $MYNAME --moderator $MYNAME \
-	--title $RW_NAME  --file $patchfile --noanchor \
+	--title $RW_NAME  --file $patchfile $OPTIONS \
 	$DEPOT $REVIEWER
 else
-    $CRUCIBLE  --newpatch --file $patchfile --noanchor $review_nr
+    $CRUCIBLE  --newpatch --file $patchfile $OPTIONS $review_nr
 fi
