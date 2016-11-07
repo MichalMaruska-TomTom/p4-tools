@@ -2,7 +2,15 @@
 
 
 usage(){
-    echo "usage: ${0##*/} [+-fh} [--] NAME DEPOT..."
+    cat <<EOF
+usage: ${0##*/} [+-fh] [--] NAME DEPOT...
+
+DEPOT -- needn't contain the trailing dots, ...
+      they are added when needed.
+
+NOTE: the PWD is the client workspace root!
+To fix it later, invoke "p4 client" and edit.
+EOF
 }
 
 
