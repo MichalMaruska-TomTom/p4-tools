@@ -23,18 +23,18 @@ UNSHELVE_OPTS=""
 
 while getopts :t:f OPT; do
     case $OPT in
-	t|+t)
-	    # to:
-	    DESTINATION=$OPTARG
-	    ;;
-	f|+f)
-	    # force
-	    UNSHELVE_OPTS="-f"
-	    ;;
-	?)
-	    echo "$0: wrong option $OPT"
-	    usage
-	    exit 2
+        t|+t)
+            # to:
+            DESTINATION=$OPTARG
+            ;;
+        f|+f)
+            # force
+            UNSHELVE_OPTS="-f"
+            ;;
+        ?)
+            echo "$0: wrong option $OPT"
+            usage
+            exit 2
     esac
 done
 shift $(( OPTIND - 1 ))
@@ -45,8 +45,8 @@ OPTIND=1
 
 if [ $# -ne 1 ]
 then
-	usage;
-	exit -1
+        usage;
+        exit -1
 fi
 
 from=$1
@@ -60,9 +60,9 @@ else
     # //... ?
     if p4 revert -c $DESTINATION ...
     then
-	true;
+        true;
     else
-	echo ERROR
+        echo ERROR
     fi
 fi
 
@@ -79,4 +79,3 @@ else
     echo ERROR
     exit 1;
 fi;
-
