@@ -1,0 +1,47 @@
+#!/bin/zsh -feu
+
+
+# revert the Edit changes, but keep the files Open (in the same CL).
+# set -x
+
+usage()
+{
+cat <<EOF
+usage: ${0##*/} [+-h] [--] [CL]
+EOF
+}
+
+while getopts :h OPT; do
+    case $OPT in
+        h|+h)
+            usage
+            exit 0
+            ;;
+        *)
+            usage >&2
+            exit 2
+    esac
+done
+shift OPTIND-1
+OPTIND=1
+
+
+CL=$1
+p4 describe -s $CL | head -n -1 |\
+    gawk 'BEGIN {silent=1};
+/^Affected files/ {silent=0;getline;getline};
+  {if (!silent) print};'                   |\
+    grep 'edit$' |\
+    sed -e 's/^... //;s/ edit$//' |\
+    while read file;
+    do
+        filename=${file%\#[0-9]*}
+
+        version=${file#*#}
+        previous=$(expr $version - 1) || :
+        # echo $(p4 where  $filename)
+        # p4 diff2 -u -du "${filename}#$previous" $file
+        p4 revert $filename
+        p4 edit -c $CL $filename || {echo "sorry, $filename failed"; exit -1 }
+    done
+
