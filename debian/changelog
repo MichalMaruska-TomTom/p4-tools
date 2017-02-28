@@ -1,3 +1,37 @@
+p4-tools (3.11) release; urgency=medium
+
+  * 1-line expl for Emacs wrappers.
+  * stop tracing p4-create-pending-cl
+  * conditional verbose.
+  * clean & update
+  * p4-message: drop the TAB at the beginning.
+  * cddb -> dh migration
+  * Add usage() for -h option.
+  * New tools: p4-git-add & p4-diff-submitted-cl
+  * Use zsh & Adapt to changed output of "p4 changelist -o".
+  * Tool to "p4 add" or "p4 edit" files in a patch. The knowledge of the workspace root is hard-wired.
+  * New contrib tool to port a CL from 1 workspace to another.
+  * patch format: keep the paths absolute. Then skip the root when applying.
+  * p4-fisheye: new command.
+  * p4-fisheye: support re-uploading, verbose & empty.
+  * explanation?
+  * usage & for EDITED files skip optionally over intermediate header lines.
+  * (zsh) Correctly present the ADDed files, in the patch.
+  * simplify: put the commit message as a file comment, in the diff.
+  * diff-list: process the deleted files in a separate step.
+  * verbose option, so conditional tracing.
+  * comments in p4-diff-list
+  * clean
+  * handle empty P4DIFFOPTIONS
+  * p4-fisheye: rename a variable
+  * anchor from cmd-line
+  * fisheye: use fixed diff(1) options to get a big context.
+  * Import crucible.py
+  * p4-create-workspace: reformulate usage()
+  * new: p4-clean-cl
+
+ -- Michal Maruska <mmaruska@gmail.com>  Tue, 28 Feb 2017 15:02:13 +0100
+
 p4-tools (3.9) release; urgency=low
 
   * p4-diff-list:  handle New - added - files, and drop the standard diff header.
