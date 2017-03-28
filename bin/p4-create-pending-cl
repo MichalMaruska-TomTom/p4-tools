@@ -30,6 +30,6 @@ then
 fi
 
 
-${P4SHARE:-~/tomtom/}/new-changelist-template "$1" |\
+${P4SHARE:-/usr/share/p4-tools}/new-changelist-template "$1" |\
 p4 change -i |\
 sed -e 's/Change \([0-9]\+\) created\./\1/'

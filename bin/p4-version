@@ -34,7 +34,7 @@ OPTIND=1
 
 
 # either simple or complete.
-base=$(p4 cstat | ${P4SHARE:-~/tomtom/}/p4-parse-cstat-version.awk)
+base=$(p4 cstat | ${P4SHARE:-/usr/share/p4-tools/}/p4-parse-cstat-version.awk)
 
 if [ $simple = "y" ]
 then

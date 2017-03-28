@@ -42,4 +42,4 @@ fi
 
 
 p4 changelists -l -s submitted -m $limit $where |\
- sed --quiet -f $P4SHARE/p4-changelists.color.sed
+ sed --quiet -f ${P4SHARE-/usr/share/p4-tools/}/p4-changelists.color.sed
