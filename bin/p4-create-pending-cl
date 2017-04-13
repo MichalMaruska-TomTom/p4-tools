@@ -10,13 +10,13 @@ EOF
 
 while getopts :h OPT; do
     case $OPT in
-	h|+h)
-	    usage
-	    exit 0
-	    ;;
-	*)
-	    echo "usage: ${0##*/} [+-h} [--] ARGS..."
-	    exit 2
+        h|+h)
+            usage
+            exit 0
+            ;;
+        *)
+            echo "usage: ${0##*/} [+-h} [--] ARGS..."
+            exit 2
     esac
 done
 
