@@ -1,4 +1,4 @@
-#! /bin/bash -eu
+#! /usr/bin/zsh -f
 
 
 limit=20
@@ -10,13 +10,14 @@ usage: ${0##*/} [+-n number] [--] ARGS...
 
 Shows the submitted changelists...
 -n         possibly with a limit.
+-e CL      past the CL, inclusive
 ARGS...   limits to that part of repository.
 
 EOF
 }
 
-
-while getopts :n:h OPT; do
+startCL=()
+while getopts :n:e:h OPT; do
     case $OPT in
 	n|+n)
 	    limit=$OPTARG
@@ -25,6 +26,9 @@ while getopts :n:h OPT; do
 	    usage
 	    exit 0
 	    ;;
+        e)
+            startCL=(-e $OPTARG)
+            ;;
 	*)
 	    usage
 	    exit 2
@@ -41,5 +45,6 @@ else
 fi
 
 
-p4 changelists -l -s submitted -m $limit $where |\
+# set -x
+p4 changelists -l -s submitted $startCL -m $limit $where |\
  sed --quiet -f ${P4SHARE-/usr/share/p4-tools/}/p4-changelists.color.sed
