@@ -11,17 +11,17 @@ function find_p4_conf() {
     dir=$1
     if [ -e $dir$P4CONFIG ];
     then
-	source ./$dir$P4CONFIG
-	echo $P4CLIENT
+        source ./$dir$P4CONFIG
+        echo $P4CLIENT
     else
-	# stop if at /
-	parent=$(readlink -f "$dir")
-	# echo $parent
-	if [ "x/" =  "x$parent"  ]
-	then
-	    exit -1;
-	fi
-	find_p4_conf "../$dir"
+        # stop if at /
+        parent=$(readlink -f "$dir")
+        # echo $parent
+        if [ "x/" =  "x$parent"  ]
+        then
+            exit -1;
+        fi
+        find_p4_conf "../$dir"
     fi
 }
 
@@ -29,13 +29,12 @@ function find_p4_conf() {
 
 if [ -z "${P4CLIENT-}" ]
 then
-    if [ -z "$P4CONFIG" ]
+    if [ -z "${P4CONFIG-}" ]
     then
-	exit -1
+        exit -1
     else
-	find_p4_conf "./"
+        find_p4_conf "./"
     fi
 else
     echo $P4CLIENT
 fi
-
