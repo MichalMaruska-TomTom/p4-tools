@@ -1,0 +1,52 @@
+#!/bin/zsh -feu
+
+# User-exposed tool, to generate a Fisheye-p4-anchored diff out of git-p4 repo.
+REWRITE_TOOL=diff-to-p4diff.pl
+
+usage()
+{
+    setopt POSIX_ARGZERO
+    cat <<EOF
+usage: ${0##*/} [-a] [-d] [+-h] [--] ARGS...
+ARGS...   are passed to "git show".  (no args -> it's the HEAD)
+-d  ... use "git diff" instead
+-a  ... direct the patch to the AMS branch!
+the patch is output to stdout.
+EOF
+}
+
+
+
+DEPOT_ROOT="//depot-deauville/deauville-p4cns-wave4-main"
+
+git_command=show
+while getopts :had3 OPT; do
+    case $OPT in
+        3)
+            DEPOT_ROOT="//depot-deauville/deauville-p4cns-main"
+            ;;
+        a)
+            DEPOT_ROOT="//depot-deauville/deauville-p4cns-main-ams"
+            ;;
+        d)
+            git_command=diff
+            ;;
+        h|+h)
+            usage
+            exit 0
+            ;;
+        *)
+            usage >&2
+            exit 2
+    esac
+done
+
+shift OPTIND-1
+OPTIND=1
+
+set -x
+# git diff  a..b =  b-a
+# gitrevisions(7)
+# diff
+{ git $git_command "$@"; echo -n "(this is added to suppress a bug in crucible)"} |\
+  perl -f $REWRITE_TOOL "$DEPOT_ROOT"

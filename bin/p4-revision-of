@@ -1,0 +1,12 @@
+#!/bin/zsh -f
+
+# Print the revision of depot path.
+# usage: $0 {//depot/path/filename}
+
+
+filename=$1
+
+# possible strings:
+# - integrate change ...
+revision=$(p4 files $1| sed -e 's/.*\#\([[:digit:]]*\) - .*/\1/g')
+echo $revision
