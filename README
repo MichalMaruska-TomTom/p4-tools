@@ -1,0 +1,10 @@
+Tools originally written to work with Perforce, then re-aimed at git-p4
+
+Work-flow using git:
+
+* clone
+* sync
+* rebase
+* build in a separate repo, maintained by syncing with "git worktree"
+* create (patch for ) review
+* submit
