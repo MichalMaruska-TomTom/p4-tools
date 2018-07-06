@@ -79,8 +79,9 @@ if [ $VERBOSE = "y" ]; then
 fi
 # export sane default. Note that the (_short_) options are for
 # diff(1) compatible!
-P4DIFF=${P4DIFF:-diff}  \
-    echo $cl_files |\
+export P4DIFF=${P4DIFF:-diff}
+
+echo $cl_files |\
     p4 -x - diff "${P4DIFFOPTIONS+-d$P4DIFFOPTIONS}" |\
     if [ $plain_diff = 0 ]; then
        awk -f $SKIP_HEADER_AWK |\
