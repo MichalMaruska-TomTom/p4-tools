@@ -2,7 +2,27 @@
 
 
 # list the pending (p4) changelists
+usage()
+{
+    cat <<EOF
+usage: ${0##*/} [+-h] [--] ARGS...
 
+EOF
+}
+
+while getopts :h OPT; do
+    case $OPT in
+        h|+h)
+            usage
+            exit 0
+            ;;
+        *)
+            usage >&2
+            exit 2
+    esac
+done
+shift $(( OPTIND - 1 ))
+OPTIND=1
 p4client=$(p4-client)
 p4 changes -s pending -u $P4USER -c $p4client  |\
  sed -e "s/^Change //;s/ by $P4USER@$p4client//;s/ \*pending\*//"
@@ -22,4 +42,3 @@ fi
 # how to cache?
 
 # number  description
-
