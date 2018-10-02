@@ -63,4 +63,4 @@ set -x
 # gitrevisions(7)
 # diff
 { git $git_command "$@"; echo -n "(this is added to suppress a bug in crucible)"} |\
-  perl -f $REWRITE_TOOL "$DEPOT_ROOT"
+    $REWRITE_TOOL "$DEPOT_ROOT"
