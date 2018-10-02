@@ -7,20 +7,25 @@ usage()
 {
     setopt POSIX_ARGZERO
     cat <<EOF
-usage: ${0##*/} [-a] [-d] [+-h] [--] ARGS...
-ARGS...   are passed to "git show".  (no args -> it's the HEAD)
--d  ... use "git diff" instead
+usage: ${0##*/} [-a] [-ny] [-d] [+-h] [--] ARGS...
+
+ARGS...   are passed to "git show" or "git diff"
+-d  ... use "git diff" instead -- indispensable for multi-commit diff:  aaa...bbb
 -a  ... direct the patch to the AMS branch!
+
+-n  sem
+-y  digen y400
+
 the patch is output to stdout.
 EOF
 }
 
 
-
+# todo: get it from the git-p4.py
 DEPOT_ROOT="//depot-deauville/deauville-p4cns-wave4-main"
 
 git_command=show
-while getopts :had3 OPT; do
+while getopts :had3sny OPT; do
     case $OPT in
         3)
             DEPOT_ROOT="//depot-deauville/deauville-p4cns-main"
@@ -30,6 +35,15 @@ while getopts :had3 OPT; do
             ;;
         d)
             git_command=diff
+            ;;
+        s)
+            DEPOT_ROOT="//depot-sem/main"
+            ;;
+        n)
+            DEPOT_ROOT="//depot-navkit/dev-sem"
+            ;;
+        y)
+            DEPOT_ROOT="//depot-digen/Y400-main"
             ;;
         h|+h)
             usage

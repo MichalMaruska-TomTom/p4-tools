@@ -1,11 +1,10 @@
 #! /usr/bin/perl
 
-
-# enrich a DIFF(1) input  with (revision xx) addendum which complements the filename
-# with perforce version number.
+# Enrich a DIFF(1) input  with "(revision NR)" addendum which complements the filename
+# with perforce (file) version number.
 use strict;
 
-# Usage: $0 {depot-name}
+# Usage: $0 {depot-name} < diff-file
 
 my ($DEPOT_ROOT)=@ARGV;
 
